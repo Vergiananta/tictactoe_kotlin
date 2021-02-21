@@ -21,8 +21,9 @@ import kotlinx.android.synthetic.main.fragment_board.*
  * Use the [BoardFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class BoardFragment : Fragment() {
+class BoardFragment(val onNavigationListener: OnNavigationListener) : Fragment() {
     // TODO: Rename and change types of parameters
+
     var activePlayer = ""
 //    var player1 = ""
 //    var player2 = ""
@@ -60,6 +61,13 @@ class BoardFragment : Fragment() {
         button7.setOnClickListener { boardClick(it) }
         button8.setOnClickListener { boardClick(it) }
         button9.setOnClickListener { boardClick(it) }
+
+        exit_button.setOnClickListener {
+            onNavigationListener.onExit()
+        }
+        rule_button.setOnClickListener {
+            onNavigationListener.onRule()
+        }
     }
 
     private fun showCurrentPlayerName(status: String) {
@@ -84,9 +92,12 @@ class BoardFragment : Fragment() {
         pos?.apply {
             currentBoard[pos[0]][pos[1]] = state
             val haveAWinner = winCalculation(pos[0], pos[1], state)
+
             if (!haveAWinner) {
                 switchPlayer()
                 showCurrentPlayerName("$PLAYER_TURN_TEXT")
+            } else {
+                onNavigationListener.onHaveWinner()
             }
         }
     }
@@ -171,13 +182,18 @@ class BoardFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(player1: String, player2: String) =
-            BoardFragment().apply {
+        fun newInstance(
+            player1: String,
+            player2: String,
+            navigationListener: OnNavigationListener
+        ) =
+            BoardFragment(navigationListener).apply {
                 arguments = Bundle().apply {
                     putString(PLAYER1_PARAM, player1)
                     putString(PLAYER2_PARAM, player2)
                 }
             }
+
     }
 
     fun boardClick(v: View?) {
