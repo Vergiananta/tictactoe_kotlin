@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/board_fragment"
+        android:icon="@drawable/button_orange_bg"
+        android:title="Board" />
+    <item
+        android:id="@+id/list_winner"
+        android:icon="@drawable/button_orange_bg"
+        android:title="Player" />
+</menu>
